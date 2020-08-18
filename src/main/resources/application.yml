@@ -1,0 +1,8 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /notification
+
+notification:
+  update-card-base: ${UPDATE_CARD_BASE}
+  tokens: ${TOKENS}
