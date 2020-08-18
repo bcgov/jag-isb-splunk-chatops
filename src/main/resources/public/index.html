@@ -4,12 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>NTT Data Notification Service</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <link href="index.css" rel="stylesheet">
-        <script src="index.js"></script>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-theme.min.js"></script>
+        <link href="css/index.css" rel="stylesheet">
+        <script src="js/index.js"></script>
         <script>
             $(document).ready(function() {
                 $(".success-copy").hide();
@@ -23,24 +25,29 @@
     </head>
     <body>
         <!-- Navigation -->
-        <div class="blue">
-            <div class="spacing">
-                <nav class="navbar navbar-expand-md sticky-top">
-                    <div class="container-fluid">
-                        <a class="navbar-brand" href="https://ca.nttdata.com/en/">
-                            <img src="img/logo.png" alt="ntt-logo">
-                        </a>
-                    </div>
-                    <a class="links" href="https://ca.nttdata.com/en/">
-                        About Us
-                    </a>
-                    <a class="pl-4 links" href="https://github.com/SierraSystems/ntt-data-notification-service">
-                        GitHub
-                    </a>
-                </nav>
-                <p class="main-heading">NTT Data Notification Service</p>
-            </div>
-        </div>
+        <header>
+            <nav class="navbar navbar-overwrite navbar-expand-lg navbar-dark">
+                <a class="navbar-brand" href="https://www2.gov.bc.ca">
+                    <img
+                        class="img-fluid d-none d-md-block"
+                        src="img/bcid-logo-rev-en.svg"
+                        width="181"
+                        height="44"
+                        alt="B.C. Government Logo"
+                    />
+                    <img
+                        class="img-fluid d-md-none"
+                        src="img/bcid-symbol-rev.svg"
+                        width="64"
+                        height="44"
+                        alt="B.C. Government Logo"
+                    />
+                </a>
+                <div class="navbar-brand">
+                    Notification Service
+                </div>
+            </nav>
+        </header>
 
         <!-- Heading -->
         <div class="spacing">
