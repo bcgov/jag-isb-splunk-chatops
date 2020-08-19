@@ -4,7 +4,7 @@
     "description": "NTT Data Notification Service Frontend Unit Tests",
     "main": "index.js",
     "scripts": {
-        "test": "nyc --reporter=lcov mocha -r jsdom-global/register ./src/main/resources/public/*.test.js"
+        "test": "nyc --reporter=lcov mocha -r jsdom-global/register ./src/main/resources/public/js/*.test.js"
     },
     "author": "Shreyas Devalapurkar",
     "license": "MIT",
