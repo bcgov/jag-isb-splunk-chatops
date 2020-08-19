@@ -48,59 +48,60 @@
                 </div>
             </nav>
         </header>
+        <main>
+            <!-- Heading -->
+            <div>
+                <h1 class="sub-heading">Welcome to the NTT Data Notification Service</h1>
+                <p class="text">
+                    The NTT Data Notification Service allows you to receive alerts and notifications to all your favourite
+                    channels such as Microsoft Teams and Rocket.Chat. To use our service, you must have a token and the URLs
+                    to your channels. Use our interface to generate your webhook URL.
+                </p>
+            </div>
 
-        <!-- Heading -->
-        <div class="spacing">
-            <h1 class="sub-heading head">Welcome to the NTT Data Notification Service</h1>
-            <p class="text head">
-                The NTT Data Notification Service allows you to receive alerts and notifications to all your favourite
-                channels such as Microsoft Teams and Rocket.Chat. To use our service, you must have a token and the URLs
-                to your channels. Use our interface to generate your webhook URL.
-            </p>
-        </div>
+            <!-- Content -->
+            <div class="content">
+                <div class="left-content">
+                    <b class="small-font">Enter Token</b>
+                    <br/>
+                    <input type="text" class="token input mb-4">
 
-        <!-- Content -->
-        <div class="spacing content">
-            <div class="left-content head">
-                <b class="small-font">Enter Token</b>
-                <br/>
-                <input type="text" class="token input mb-4">
-
-                <div class="rectangle">
-                    <div id="add-teams-url-here" class="input-group">
-                        <img src="img/teams.png" width="23px" height="23px"/>
-                        <b class="small-font">Enter Microsoft Teams URL</b>
-                        <input type="text" class="input" id="teams-url-id">
-                        <div class="input-group-addon">
-                            <button class="pointer" onclick="addNewUrl('teams-url')">+</button>
+                    <div class="rectangle">
+                        <div id="add-teams-url-here" class="input-group">
+                            <img src="img/teams.png" width="23px" height="23px"/>
+                            <b class="small-font">Enter Microsoft Teams URL</b>
+                            <input type="text" class="input" id="teams-url-id">
+                            <div class="input-group-addon">
+                                <button class="pointer" onclick="addNewUrl('teams-url')">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="rectangle">
+                        <div id="add-rocket-chat-url-here" class="input-group">
+                            <img src="img/rocketchat.png" width="23px" height="23px"/>
+                            <b class="small-font">Enter Rocket.Chat URL</b>
+                            <input type="text" class="input" id="rocket-chat-url-id">
+                            <div class="input-group-addon">
+                                <button class="pointer" onclick="addNewUrl('rocket-chat-url')">+</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <br/>
-                <div class="rectangle">
-                    <div id="add-rocket-chat-url-here" class="input-group">
-                        <img src="img/rocketchat.png" width="23px" height="23px"/>
-                        <b class="small-font">Enter Rocket.Chat URL</b>
-                        <input type="text" class="input" id="rocket-chat-url-id">
-                        <div class="input-group-addon">
-                            <button class="pointer" onclick="addNewUrl('rocket-chat-url')">+</button>
-                        </div>
-                    </div>              
+
+                <div class="right-content">
+                    <button class="left-button" onclick="generateFinalUrl()">
+                        <b class="button-text">Generate Url</b>
+                    </button>
+                    <button class="right-button" onclick="copyToClipboard()">
+                        <img src="img/copy.svg" alt="copy-icon" width="23px" height="23px"/>
+                    </button>
+                    <textarea placeholder="URL will be generated here..." id="generatedUrl" class="form-control textarea" rows="8"></textarea>
+                    <p class="success-copy">Url has been successfully copied to the clipboard.</p>
+                    <p class="errors error">Please enter at least one valid url and a token.</p>
                 </div>
             </div>
-
-            <div class="right-content">
-                <button class="left-button" onclick="generateFinalUrl()">
-                    <b class="button-text">Generate Url</b>
-                </button>
-                <button class="right-button" onclick="copyToClipboard()">
-                    <img src="img/copy.svg" alt="copy-icon" width="23px" height="23px"/>
-                </button>
-                <textarea placeholder="URL will be generated here..." id="generatedUrl" class="form-control textarea" rows="8"></textarea>
-                <p class="success-copy">Url has been successfully copied to the clipboard.</p>
-                <p class="errors error">Please enter at least one valid url and a token.</p>
-            </div>
-        </div>
+        </main>
         <footer class="footer">
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <!-- Navbar content -->

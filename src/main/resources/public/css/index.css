@@ -3,10 +3,12 @@ html, body {
     font-family: 'Catamaran';
 }
 
-.spacing {
-    padding-left: 12%;
-    padding-right: 12%;
-    overflow: auto;
+main {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .links {
@@ -21,15 +23,9 @@ html, body {
 
 .main-heading {
     color: #FFFFFF !important;
-    padding-left: 40px;
     padding-top: 20px;
     padding-bottom: 20px;
     font-size: 35px;
-}
-
-.head {
-    padding-left: 40px;
-    margin-right: 25px;
 }
 
 .sub-heading {
@@ -47,16 +43,15 @@ html, body {
 
 .content {
     padding-top: 15px;
+    display: flex;
 }
 
 .left-content {
     width: 55%;
-    float: left;
 }
 
 .right-content {
     width: 35%;
-    float: left;
 }
 
 .small-font {
@@ -106,7 +101,7 @@ html, body {
 .rectangle{
     margin-top: 7px;
     margin-bottom: 7px;
-    padding: 10px 0px 30px 10px;
+    padding: 10px 0px 30px 0px;
 }
 
 .entered-urls {
@@ -125,4 +120,14 @@ html, body {
 
 .navbar-overwrite {
     justify-content: flex-start;
+}
+
+@media (max-width: 576px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .left-content, .right-content {
+    width: 100%;
+  }
 }
