@@ -18,7 +18,7 @@ In order to use this application, a client requires a token (set in the applicat
 
 Once a token has been added/provided, navigate to the notification service (if running locally via docker `http://localhost:7080/alert`)
 
-![ntt](https://user-images.githubusercontent.com/28017034/83478036-a8378480-a449-11ea-96fb-83a4e58c5004.PNG)
+![gov](https://github.com/bcgov/jag-isb-splunk-chatops/blob/main/docs/images/govNotification.PNG)
 
 Enter the provided token and the webHook url(s) notifications should be sent to. Click `Generate URL` to create a url containing the information required by the service to post to the provided webHook url(s). This URL will need to be regenerated and updated in Splunk when a chat destination needs to be added or removed. (If running locally via docker, the `localhost:port` part of the url will need to be changed to `172.20.0.6:8080`)
 
