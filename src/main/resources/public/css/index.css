@@ -72,10 +72,6 @@ html, body {
     font-size: 12px;
 }
 
-.sides {
-    clear: both;
-}
-
 .left-button {
     cursor: pointer;
     width: 83%;
@@ -108,9 +104,8 @@ html, body {
 }
 
 .rectangle{
-    background: #F3F3F3 0% 0% no-repeat padding-box;
-    border-radius: 3px;
-    margin-top: 15px;
+    margin-top: 7px;
+    margin-bottom: 7px;
     padding: 10px 0px 30px 10px;
 }
 
