@@ -8,11 +8,11 @@
 		<version>2.3.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.nttdata</groupId>
-	<artifactId>ntt-data-notification-service</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
-	<name>ntt-data-notification-service</name>
-	<description>NTT Data webHook notification service</description>
+	<groupId>ca.bc.gov</groupId>
+	<artifactId>bc-gov-notification-service</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>bc-gov-notification-service</name>
+	<description>BC Gov webHook Notification Service</description>
 
 	<properties>
 		<java.version>1.8</java.version>
