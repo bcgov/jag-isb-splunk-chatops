@@ -44,6 +44,8 @@ public class TeamsChannelService implements ChannelService {
 
         potentialActionsStatus.addInput(getTeamsInput());
 
+//        String updateUrl = notificationServiceProperties.getUpdateCardBase() + "/" +
+
         TeamsAction statusAction = TeamsAction.defaultTeamAction("HttpPOST", "OK", notificationServiceProperties.getUpdateCardBase());
 
         potentialActionsStatus.addAction(statusAction);
