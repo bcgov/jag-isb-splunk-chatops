@@ -165,6 +165,6 @@ public class UpdateCardControllerTest {
     @Test
     void testUnauth() {
       ResponseEntity<String> result = updateCardController.update(new NotificationBody());
-      Assertions.assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+      Assertions.assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
     }
 }
