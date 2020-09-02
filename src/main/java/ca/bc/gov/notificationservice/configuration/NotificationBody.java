@@ -6,6 +6,7 @@ import ca.bc.gov.notificationservice.sources.notification.models.Notification;
 public class NotificationBody {
   private WebHookParams webHookParams = new WebHookParams();
   private Notification notification = new Notification();
+  private String updateUrl;
   private String response;
 
   public WebHookParams getWebHookParams() {
@@ -26,11 +27,27 @@ public class NotificationBody {
     this.notification = notification;
   }
 
+  public String getUpdateUrl() {
+    return updateUrl;
+  }
+
+  public void setUpdateUrl(String updateUrl) {
+    this.updateUrl = updateUrl;
+  }
+
   public String getResponse() {
     return response;
   }
 
   public void setResponse(String response) {
+    this.response = response;
+  }
+
+  public NotificationBody(WebHookParams webHookParams,
+      Notification notification, String updateUrl, String response) {
+    this.webHookParams = webHookParams;
+    this.notification = notification;
+    this.updateUrl = updateUrl;
     this.response = response;
   }
 
