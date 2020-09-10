@@ -103,7 +103,7 @@ public class TeamsChannelServiceTest {
 
         Assertions.assertEquals(1, actual.getSections().size());
 
-        Assertions.assertEquals("https://user-images.githubusercontent.com/51387119/82707419-ddb1c600-9c30-11ea-8bfa-b3c624b23cdd.png", actual.getSections().get(0).getActivityImage());
+        Assertions.assertEquals("https://user-images.githubusercontent.com/60439815/92022236-ceeaad00-ed0f-11ea-8396-11fd19180c2c.png", actual.getSections().get(0).getActivityImage());
         Assertions.assertEquals("From search_name", actual.getSections().get(0).getActivitySubtitle());
         Assertions.assertEquals("source", actual.getSections().get(0).getActivityTitle());
         Assertions.assertEquals(6, actual.getSections().get(0).getFacts().size());

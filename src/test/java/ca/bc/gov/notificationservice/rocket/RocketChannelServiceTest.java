@@ -47,7 +47,7 @@ public class RocketChannelServiceTest {
     RocketMessage actual = (RocketMessage) sur.generatePayload(notification, "TESTURL");
 
     Assertions.assertEquals("source", actual.getAlias());
-    Assertions.assertEquals("https://user-images.githubusercontent.com/51387119/82707419-ddb1c600-9c30-11ea-8bfa-b3c624b23cdd.png", actual.getAvatar());
+    Assertions.assertEquals("https://user-images.githubusercontent.com/60439815/92022236-ceeaad00-ed0f-11ea-8396-11fd19180c2c.png", actual.getAvatar());
     Assertions.assertEquals(rocketText, actual.getText());
   }
 }
