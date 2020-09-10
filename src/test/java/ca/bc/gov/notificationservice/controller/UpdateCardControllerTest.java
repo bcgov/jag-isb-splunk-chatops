@@ -141,7 +141,7 @@ public class UpdateCardControllerTest {
         notificationBody.setResponse("Success");
 
         when(teamsChannelService.generatePayload(any(), any())).thenReturn(gson.fromJson(teamsCard, TeamsCard.class));
-        ResponseEntity<String> result = updateCardController.update("TEST", notificationBody);
+        ResponseEntity<String> result = updateCardController.update(notificationBody);
 
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
         Assertions.assertEquals(true, result.getHeaders().containsKey("CARD-UPDATE-IN-BODY"));
@@ -155,7 +155,7 @@ public class UpdateCardControllerTest {
         NotificationBody notificationBody = new NotificationBody();
         notificationBody.setResponse("Success");
 
-        ResponseEntity<String> result = updateCardController.update("TEST", notificationBody);
+        ResponseEntity<String> result = updateCardController.update(notificationBody);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
         Assertions.assertEquals("Missing webHook Url.", result.getBody());
@@ -164,7 +164,7 @@ public class UpdateCardControllerTest {
     @DisplayName("Unauthorized - NotificationController")
     @Test
     void testUnauth() {
-      ResponseEntity<String> result = updateCardController.update("unauthorised", new NotificationBody());
-      Assertions.assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+      ResponseEntity<String> result = updateCardController.update(new NotificationBody());
+      Assertions.assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
     }
 }
