@@ -43,11 +43,8 @@ public class NotificationBody {
     this.response = response;
   }
 
-  public NotificationBody(WebHookParams webHookParams,
-      Notification notification, String updateUrl) {
-    this.webHookParams = webHookParams;
-    this.notification = notification;
-    this.updateUrl = updateUrl;
+  public NotificationBody() {
+    super();
   }
 
   public NotificationBody(WebHookParams webHookParams,
@@ -56,6 +53,13 @@ public class NotificationBody {
     this.notification = notification;
     this.updateUrl = updateUrl;
     this.response = response;
+  }
+
+  public NotificationBody(WebHookParams webHookParams,
+      Notification notification, String updateUrl) {
+    this.webHookParams = webHookParams;
+    this.notification = notification;
+    this.updateUrl = updateUrl;
   }
 
   public String toJson() {
