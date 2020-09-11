@@ -71,18 +71,15 @@ public class TeamsChannelServiceTest {
         Assertions.assertEquals(0, actual.getPotentialAction().get(0).getActions().size());
 
         Assertions.assertEquals(0, actual.getPotentialAction().get(0).getInputs().size());
-
-
+        
         Assertions.assertEquals("Update Status", actual.getPotentialAction().get(1).getName());
         Assertions.assertEquals("ActionCard", actual.getPotentialAction().get(1).getType());
         Assertions.assertEquals(1, actual.getPotentialAction().get(1).getActions().size());
 
         Assertions.assertEquals("HttpPOST", actual.getPotentialAction().get(1).getActions().get(0).getType());
-        Assertions.assertEquals("http://aurl.com", actual.getPotentialAction().get(1).getActions().get(0).getTarget());
+        Assertions.assertEquals("updateUrl", actual.getPotentialAction().get(1).getActions().get(0).getTarget());
         Assertions.assertEquals("OK", actual.getPotentialAction().get(1).getActions().get(0).getName());
         Assertions.assertEquals(teamsResult, actual.getPotentialAction().get(1).getActions().get(0).getBody());
-
-
 
         Assertions.assertEquals(1, actual.getPotentialAction().get(1).getInputs().size());
 
