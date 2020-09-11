@@ -52,12 +52,9 @@ public class TeamsChannelService implements ChannelService {
 
         teamsCard.addPotentialAction(potentialActionsStatus);
 
-//        notificationBody.setNotification(notification);
         WebHookParams webHookParams = new WebHookParams();
         webHookParams.addWebHookUrls(new WebHookUrls(ChatApp.TEAMS, webHookUrl));
-//        notificationBody.setWebHookParams(webHookParams);
-//        notificationBody.setResponse("{{statusList.value}}");
-
+        
         NotificationBody notificationBody = new NotificationBody(webHookParams, notification, updateUrl, "{{statusList.value}}");
 
         statusAction.setBody(notificationBody.toJson());
