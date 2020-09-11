@@ -6,6 +6,6 @@ public interface ChannelService {
 
     ChatApp getChatApp();
 
-    Object generatePayload(Notification notification, String webHookUrl);
+    Object generatePayload(Notification notification, String webHookUrl, String updateUrl);
 
 }

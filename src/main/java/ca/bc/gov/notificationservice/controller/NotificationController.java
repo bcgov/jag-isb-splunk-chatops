@@ -3,6 +3,7 @@ package ca.bc.gov.notificationservice.controller;
 import ca.bc.gov.notificationservice.configuration.NotificationBody;
 import ca.bc.gov.notificationservice.configuration.NotificationServiceProperties;
 import ca.bc.gov.notificationservice.service.WebHookService;
+import java.text.MessageFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class NotificationController {
       return new ResponseEntity<>("Token validation failed", HttpStatus.UNAUTHORIZED);
     }
 
-    return webHookService.postMessage(notificationBody.getNotification(), notificationBody.getWebHookParams());
+    String updateUrl = MessageFormat.format("{0}/{1}", notificationServiceProperties.getUpdateCardBase(), token);
+    notificationBody.setUpdateUrl(updateUrl);
+
+    return webHookService.postMessage(notificationBody);
   }
 }

@@ -35,7 +35,7 @@ public class TeamsChannelServiceTest {
             "\t\"app\" : \"app\"\n" +
             "}";
 
-    private static final String teamsResult = "{\"webHookParams\":{\"webHookUrls\":[{\"chatApp\":\"TEAMS\",\"url\":\"TESTURL\"}]},\"notification\":{\"appName\":\"source\",\"origin\":\"search_name\",\"owner\":\"owner\",\"message\":\"message\",\"returnUrl\":\"result_links\",\"details\":{\"other\":\"other\"}},\"response\":\"{{statusList.value}}\"}";
+    private static final String teamsResult = "{\"webHookParams\":{\"webHookUrls\":[{\"chatApp\":\"TEAMS\",\"url\":\"TESTURL\"}]},\"notification\":{\"appName\":\"source\",\"origin\":\"search_name\",\"owner\":\"owner\",\"message\":\"message\",\"returnUrl\":\"result_links\",\"details\":{\"other\":\"other\"}},\"updateUrl\":\"updateUrl\",\"response\":\"{{statusList.value}}\"}";
 
     @BeforeAll
     public void setUp() {
@@ -56,7 +56,7 @@ public class TeamsChannelServiceTest {
 
         Notification notification = splunkAlert.convertToAlert();
 
-        TeamsCard actual = (TeamsCard) sut.generatePayload(notification, "TESTURL");
+        TeamsCard actual = (TeamsCard) sut.generatePayload(notification, "TESTURL", "updateUrl");
 
 
         Assertions.assertEquals("http://schema.org/extensions", actual.getContext());

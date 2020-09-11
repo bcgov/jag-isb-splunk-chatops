@@ -34,7 +34,7 @@ public class TeamsChannelService implements ChannelService {
     }
 
     @Override
-    public Object generatePayload(Notification notification, String webHookUrl) {
+    public Object generatePayload(Notification notification, String webHookUrl, String updateUrl) {
 
         TeamsCard teamsCard = TeamsCard.defaultNttCard(notification.getAppName(), webHookUrl);
 
@@ -43,7 +43,7 @@ public class TeamsChannelService implements ChannelService {
         TeamsPotentialActions potentialActionsStatus = TeamsPotentialActions.defaultTeamsPotentialActions("ActionCard","Update Status");
 
         potentialActionsStatus.addInput(getTeamsInput());
-        
+
         TeamsAction statusAction = TeamsAction.defaultTeamAction("HttpPOST", "OK", notificationServiceProperties.getUpdateCardBase());
 
         potentialActionsStatus.addAction(statusAction);
@@ -52,12 +52,13 @@ public class TeamsChannelService implements ChannelService {
 
         teamsCard.addPotentialAction(potentialActionsStatus);
 
-        NotificationBody notificationBody = new NotificationBody();
-        notificationBody.setNotification(notification);
+//        notificationBody.setNotification(notification);
         WebHookParams webHookParams = new WebHookParams();
         webHookParams.addWebHookUrls(new WebHookUrls(ChatApp.TEAMS, webHookUrl));
-        notificationBody.setWebHookParams(webHookParams);
-        notificationBody.setResponse("{{statusList.value}}");
+//        notificationBody.setWebHookParams(webHookParams);
+//        notificationBody.setResponse("{{statusList.value}}");
+
+        NotificationBody notificationBody = new NotificationBody(webHookParams, notification, updateUrl, "{{statusList.value}}");
 
         statusAction.setBody(notificationBody.toJson());
 

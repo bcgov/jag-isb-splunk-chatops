@@ -26,8 +26,12 @@ public class UpdateCardController {
   @Autowired
   TeamsChannelService teamsChannelService;
 
-  @PostMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> update(@RequestBody NotificationBody teamsUpdate) {
+  @PostMapping(value = "update/{token}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> update(@PathVariable("token") String token, @RequestBody NotificationBody teamsUpdate) {
+      if (!notificationServiceProperties.getTokens().contains(token)) {
+        logger.error("Token failed to validate");
+        return new ResponseEntity<>("Token validation failed", HttpStatus.UNAUTHORIZED);
+      }
 
       logger.info("Received message from teams");
 
@@ -37,7 +41,7 @@ public class UpdateCardController {
         return ResponseEntity.badRequest().body("Missing webHook Url.");
       }
 
-      TeamsCard obj = (TeamsCard) teamsChannelService.generatePayload(teamsUpdate.getNotification(), webHookUrl.get().getUrl());
+      TeamsCard obj = (TeamsCard) teamsChannelService.generatePayload(teamsUpdate.getNotification(), webHookUrl.get().getUrl(), teamsUpdate.getUpdateUrl());
 
       obj.getSections().stream().findFirst().ifPresent(section -> {
         section.updateFact("Status", teamsUpdate.getResponse());

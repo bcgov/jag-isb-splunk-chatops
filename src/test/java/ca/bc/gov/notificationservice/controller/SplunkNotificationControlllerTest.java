@@ -61,7 +61,7 @@ public class SplunkNotificationControlllerTest {
         Gson gson = new Gson();
         SplunkAlert splunkAlert = gson.fromJson(splunkAlertJson, SplunkAlert.class);
 
-        when(webHookService.postMessage(any(), any())).thenReturn(new ResponseEntity<>(
+        when(webHookService.postMessage(any())).thenReturn(new ResponseEntity<>(
                 "Success", HttpStatus.OK));
         ResponseEntity<String> result = splunkNotificationController.alert(TEST, "", splunkAlert);
 
@@ -74,7 +74,7 @@ public class SplunkNotificationControlllerTest {
         Gson gson = new Gson();
         SplunkAlert splunkAlert = gson.fromJson(splunkAlertJson, SplunkAlert.class);
 
-        when(webHookService.postMessage(any(), any())).thenReturn(new ResponseEntity<>(
+        when(webHookService.postMessage(any())).thenReturn(new ResponseEntity<>(
                 "Success", HttpStatus.OK));
         ResponseEntity<String> result = splunkNotificationController.alert(FAILURE, "", splunkAlert);
 

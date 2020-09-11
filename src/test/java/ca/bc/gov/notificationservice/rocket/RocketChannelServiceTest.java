@@ -44,7 +44,7 @@ public class RocketChannelServiceTest {
 
     Notification notification = splunkAlert.convertToAlert();
 
-    RocketMessage actual = (RocketMessage) sur.generatePayload(notification, "TESTURL");
+    RocketMessage actual = (RocketMessage) sur.generatePayload(notification, "TESTURL", "updateUrl");
 
     Assertions.assertEquals("source", actual.getAlias());
     Assertions.assertEquals("https://user-images.githubusercontent.com/60439815/92022236-ceeaad00-ed0f-11ea-8396-11fd19180c2c.png", actual.getAvatar());
