@@ -8,6 +8,7 @@ import ca.bc.gov.notificationservice.configuration.NotificationServiceProperties
 import ca.bc.gov.notificationservice.configuration.WebHookParams;
 import ca.bc.gov.notificationservice.configuration.WebHookUrls;
 import ca.bc.gov.notificationservice.service.ChatApp;
+import ca.bc.gov.notificationservice.sources.notification.models.Notification;
 import ca.bc.gov.notificationservice.teams.models.TeamsCard;
 import com.google.gson.Gson;
 import ca.bc.gov.notificationservice.teams.TeamsChannelService;
@@ -134,14 +135,15 @@ public class UpdateCardControllerTest {
       void testSuccess() {
         Gson gson = new Gson();
 
-        NotificationBody notificationBody = new NotificationBody();
+        Notification notification = new Notification();
+
         WebHookParams webHookParams = new WebHookParams();
         webHookParams.addWebHookUrls(new WebHookUrls(ChatApp.TEAMS, "webHookUrl"));
-        notificationBody.setWebHookParams(webHookParams);
-        notificationBody.setResponse("Success");
 
-        when(teamsChannelService.generatePayload(any(), any())).thenReturn(gson.fromJson(teamsCard, TeamsCard.class));
-        ResponseEntity<String> result = updateCardController.update(notificationBody);
+        NotificationBody notificationBody = new NotificationBody(webHookParams, notification, "updateURL", "Success");
+
+        when(teamsChannelService.generatePayload(any(), any(), any())).thenReturn(gson.fromJson(teamsCard, TeamsCard.class));
+        ResponseEntity<String> result = updateCardController.update("TEST", notificationBody);
 
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
         Assertions.assertEquals(true, result.getHeaders().containsKey("CARD-UPDATE-IN-BODY"));
@@ -152,10 +154,9 @@ public class UpdateCardControllerTest {
     @DisplayName("Failure - UpdateCardController")
     @Test
     void testMissingWebHookUrl() {
-        NotificationBody notificationBody = new NotificationBody();
-        notificationBody.setResponse("Success");
+        NotificationBody notificationBody = new NotificationBody(new WebHookParams(), new Notification(), "updateUrl", "Success");
 
-        ResponseEntity<String> result = updateCardController.update(notificationBody);
+        ResponseEntity<String> result = updateCardController.update("TEST", notificationBody);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
         Assertions.assertEquals("Missing webHook Url.", result.getBody());
@@ -164,7 +165,9 @@ public class UpdateCardControllerTest {
     @DisplayName("Unauthorized - NotificationController")
     @Test
     void testUnauth() {
-      ResponseEntity<String> result = updateCardController.update(new NotificationBody());
-      Assertions.assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
+      NotificationBody notificationBody = new NotificationBody(new WebHookParams(), new Notification(), "updateUrl", "Success");
+
+      ResponseEntity<String> result = updateCardController.update("NOTTOKEN", notificationBody);
+      Assertions.assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
     }
 }

@@ -1,5 +1,6 @@
 package ca.bc.gov.notificationservice.service;
 
+import ca.bc.gov.notificationservice.configuration.NotificationBody;
 import ca.bc.gov.notificationservice.configuration.WebHookParams;
 import ca.bc.gov.notificationservice.configuration.WebHookUrls;
 import ca.bc.gov.notificationservice.rocket.RocketChannelService;
@@ -52,7 +53,7 @@ public class WebHookServiceImplTest {
         MockitoAnnotations.initMocks(this);
         baseUrl = String.format("http://localhost:%s",
                 mockBackEnd.getPort());
-        when(teamsChannelService.generatePayload(any(), any())).thenReturn(new Object());
+        when(teamsChannelService.generatePayload(any(), any(), any())).thenReturn(new Object());
     }
 
 
@@ -81,7 +82,9 @@ public class WebHookServiceImplTest {
 
         Notification notification = splunkAlert.convertToAlert();
 
-        ResponseEntity<String> result = webHookService.postMessage(notification,webHookParams);
+        NotificationBody notificationBody = new NotificationBody(webHookParams, notification, "updateUrl");
+
+        ResponseEntity<String> result = webHookService.postMessage(notificationBody);
 
         Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
@@ -110,7 +113,9 @@ public class WebHookServiceImplTest {
 
         Notification notification = splunkAlert.convertToAlert();
 
-        ResponseEntity<String> result = webHookService.postMessage(notification,webHookParams);
+        NotificationBody notificationBody = new NotificationBody(webHookParams, notification, "updateUrl");
+
+        ResponseEntity<String> result = webHookService.postMessage(notificationBody);
 
         Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
@@ -139,7 +144,9 @@ public class WebHookServiceImplTest {
 
         Notification notification = splunkAlert.convertToAlert();
 
-        ResponseEntity<String> result = webHookService.postMessage(notification,webHookParams);
+        NotificationBody notificationBody = new NotificationBody(webHookParams, notification, "updateUrl");
+
+        ResponseEntity<String> result = webHookService.postMessage(notificationBody);
 
         Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
@@ -168,7 +175,9 @@ public class WebHookServiceImplTest {
 
         Notification notification = splunkAlert.convertToAlert();
 
-        ResponseEntity<String> result = webHookService.postMessage(notification,webHookParams);
+        NotificationBody notificationBody = new NotificationBody(webHookParams, notification, "updateUrl");
+
+        ResponseEntity<String> result = webHookService.postMessage(notificationBody);
 
         Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }

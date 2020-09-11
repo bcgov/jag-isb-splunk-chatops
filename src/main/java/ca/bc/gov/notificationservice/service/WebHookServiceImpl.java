@@ -1,5 +1,6 @@
 package ca.bc.gov.notificationservice.service;
 
+import ca.bc.gov.notificationservice.configuration.NotificationBody;
 import ca.bc.gov.notificationservice.configuration.WebHookParams;
 import ca.bc.gov.notificationservice.sources.notification.models.Notification;
 import com.google.gson.Gson;
@@ -24,7 +25,9 @@ public class WebHookServiceImpl implements WebHookService {
     @Autowired
     ChannelServiceFactory channelServiceFactory;
 
-    public ResponseEntity<String> postMessage(Notification notification, WebHookParams webHookParams) {
+    public ResponseEntity<String> postMessage(NotificationBody notificationBody) {
+        Notification notification = notificationBody.getNotification();
+        WebHookParams webHookParams = notificationBody.getWebHookParams();
 
         webHookParams.getWebHookUrls().stream().forEach(webHookUrl -> {
             ChatApp chatApp = webHookUrl.getChatApp();
@@ -33,7 +36,7 @@ public class WebHookServiceImpl implements WebHookService {
             logger.info("Posting to {}", chatApp);
 
             channelService.ifPresent(service -> post(webHookUrl.getUrl(), service.generatePayload(
-                notification, webHookUrl.getUrl())));
+                notification, webHookUrl.getUrl(), notificationBody.getUpdateUrl())));
         });
 
         return new ResponseEntity<>("Success", HttpStatus.CREATED);

@@ -35,7 +35,7 @@ public class TeamsChannelServiceTest {
             "\t\"app\" : \"app\"\n" +
             "}";
 
-    private static final String teamsResult = "{\"webHookParams\":{\"webHookUrls\":[{\"chatApp\":\"TEAMS\",\"url\":\"TESTURL\"}]},\"notification\":{\"appName\":\"source\",\"origin\":\"search_name\",\"owner\":\"owner\",\"message\":\"message\",\"returnUrl\":\"result_links\",\"details\":{\"other\":\"other\"}},\"response\":\"{{statusList.value}}\"}";
+    private static final String teamsResult = "{\"webHookParams\":{\"webHookUrls\":[{\"chatApp\":\"TEAMS\",\"url\":\"TESTURL\"}]},\"notification\":{\"appName\":\"source\",\"origin\":\"search_name\",\"owner\":\"owner\",\"message\":\"message\",\"returnUrl\":\"result_links\",\"details\":{\"other\":\"other\"}},\"updateUrl\":\"updateUrl\",\"response\":\"{{statusList.value}}\"}";
 
     @BeforeAll
     public void setUp() {
@@ -56,7 +56,7 @@ public class TeamsChannelServiceTest {
 
         Notification notification = splunkAlert.convertToAlert();
 
-        TeamsCard actual = (TeamsCard) sut.generatePayload(notification, "TESTURL");
+        TeamsCard actual = (TeamsCard) sut.generatePayload(notification, "TESTURL", "updateUrl");
 
 
         Assertions.assertEquals("http://schema.org/extensions", actual.getContext());
@@ -71,18 +71,15 @@ public class TeamsChannelServiceTest {
         Assertions.assertEquals(0, actual.getPotentialAction().get(0).getActions().size());
 
         Assertions.assertEquals(0, actual.getPotentialAction().get(0).getInputs().size());
-
-
+        
         Assertions.assertEquals("Update Status", actual.getPotentialAction().get(1).getName());
         Assertions.assertEquals("ActionCard", actual.getPotentialAction().get(1).getType());
         Assertions.assertEquals(1, actual.getPotentialAction().get(1).getActions().size());
 
         Assertions.assertEquals("HttpPOST", actual.getPotentialAction().get(1).getActions().get(0).getType());
-        Assertions.assertEquals("http://aurl.com", actual.getPotentialAction().get(1).getActions().get(0).getTarget());
+        Assertions.assertEquals("updateUrl", actual.getPotentialAction().get(1).getActions().get(0).getTarget());
         Assertions.assertEquals("OK", actual.getPotentialAction().get(1).getActions().get(0).getName());
         Assertions.assertEquals(teamsResult, actual.getPotentialAction().get(1).getActions().get(0).getBody());
-
-
 
         Assertions.assertEquals(1, actual.getPotentialAction().get(1).getInputs().size());
 

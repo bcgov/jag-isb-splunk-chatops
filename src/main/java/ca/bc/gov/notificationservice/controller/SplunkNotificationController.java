@@ -1,11 +1,13 @@
 package ca.bc.gov.notificationservice.controller;
 
+import ca.bc.gov.notificationservice.configuration.NotificationBody;
 import com.google.gson.Gson;
 import ca.bc.gov.notificationservice.configuration.NotificationServiceProperties;
 import ca.bc.gov.notificationservice.configuration.WebHookParams;
 import ca.bc.gov.notificationservice.sources.notification.models.Notification;
 import ca.bc.gov.notificationservice.sources.splunk.models.SplunkAlert;
 import ca.bc.gov.notificationservice.service.WebHookService;
+import java.text.MessageFormat;
 import java.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +48,10 @@ public class SplunkNotificationController {
 
         WebHookParams webHookParams = gson.fromJson(decodedRoutesUrl, WebHookParams.class);
 
-        return webHookService.postMessage(notification, webHookParams);
+        String updateUrl = MessageFormat.format("{0}/{1}", notificationServiceProperties.getUpdateCardBase(), token);
+
+        NotificationBody notificationBody = new NotificationBody(webHookParams, notification, updateUrl);
+
+        return webHookService.postMessage(notificationBody);
     }
 }
