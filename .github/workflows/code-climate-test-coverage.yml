@@ -9,7 +9,7 @@ on:
 jobs:
   spring-boot:
     env:
-      CC_TEST_REPORTER_ID: 38376aee43a1d7a4c716afb6773f415dc7484a9045cc07d4c2daba9ec36609d6
+      CC_TEST_REPORTER_ID: ff3aeaaf1be2adb3691a1013b75292afff122aafd3a394c5148754fcc3eafb2e
     
     name: Create, format and upload Java coverage artifact
     runs-on: ubuntu-latest
