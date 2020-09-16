@@ -4,5 +4,5 @@ server:
     context-path: /notification
 
 notification:
-  update-card-base: ${UPDATE_CARD_BASE}
+  updateCardBase: ${UPDATE_CARD_BASE}
   tokens: ${TOKENS}
