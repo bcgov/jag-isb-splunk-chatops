@@ -72,8 +72,6 @@ objects:
               kind: ImageStreamTag
               namespace: ${namespacePrefix}-tools
               name: '${appName}:${deploymentEnvironment}'
-            lastTriggeredImage: >-
-              image-registry.openshift-image-registry.svc:5000/${namespacePrefix}-tools/jag-isb-splunk-chatops@sha256:c1f3ece7b80d976f6a15d0bcfcd4f9c48a5080dbc6beb3bc4dccc327e8c243ae
         - type: ConfigChange
       replicas: 1
       revisionHistoryLimit: 10
