@@ -4,7 +4,7 @@ labels:
   template: jag-isb-chatops-template
 metadata:
   annotations:
-    openshift.io/display-name: Efiling Pipeline Template
+    openshift.io/display-name: Jag-ISB-Splunk-Chatops Pipeline Template
     description: |-
       This is a template for OpenShift Jenkins Pipelines.
     iconClass: icon-jenkins
