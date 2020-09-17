@@ -1,0 +1,113 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: jag-isb-chatops-template
+metadata:
+  annotations:
+    openshift.io/display-name: JAG ISB Chatops DC Template
+    description: |-
+      This is a template for a Openshift v4.4 Deployment Config
+    iconClass: icon-jenkins
+    tags: depoloymentConfig
+  name: jag-isb-chatops-dc-template
+parameters:
+  - description: The name assigned to all of the frontend objects defined in this template.
+    displayName: Name
+    name: appName
+    required: true
+    value: jag-isb-splunk-chatops
+  - description: Openshift namespace prefix
+    displayName: Namespace Prefix
+    name: namespacePrefix
+    required: true
+    value: s9h76g
+  - description: Tokens     
+    displayName: Tokens 
+    name: tokens 
+    required: true 
+  - description: Update Card Base URL 
+    displayName: Update Card Base URL
+    name: updateCardBaseURL
+    required: true
+  - description: Deployment Environment (dev/test/prod)
+    displayName: Deployment Environment 
+    name: deploymentEnvironment
+    required:
+    value: dev
+objects:
+  - kind: DeploymentConfig
+    apiVersion: apps.openshift.io/v1
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+      name: ${appName}-dc
+      generation: 7
+      labels:
+        app: ${appName}-dc
+        app.kubernetes.io/component: ${appName}-dc
+        app.kubernetes.io/instance: ${appName}-dc
+        app.kubernetes.io/name: ${appName}-chatops
+        app.kubernetes.io/part-of: ${appName}-dc
+        app.openshift.io/runtime: ${appName}-chatops
+        app.openshift.io/runtime-namespace: ${namespacePrefix}-tools
+        app.openshift.io/runtime-version: dev
+    spec:
+      strategy:
+        type: Rolling
+        rollingParams:
+          updatePeriodSeconds: 1
+          intervalSeconds: 1
+          timeoutSeconds: 600
+          maxUnavailable: 25%
+          maxSurge: 25%
+        resources: {}
+        activeDeadlineSeconds: 21600
+      triggers:
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${appName}-dc
+            from:
+              kind: ImageStreamTag
+              namespace: ${namespacePrefix}-tools
+              name: '${appName}:${deploymentEnvironment}'
+        - type: ConfigChange
+      replicas: 1
+      revisionHistoryLimit: 10
+      test: false
+      selector:
+        app: ${appName}-dc
+        deploymentconfig: ${appName}-dc
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: ${appName}-dc
+            deploymentconfig: ${appName}-dc
+          annotations:
+            openshift.io/generated-by: OpenShiftWebConsole
+        spec:
+          containers:
+            - resources: {}
+              terminationMessagePath: /dev/termination-log
+              name: ${appName}-dc
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+                - containerPort: 8443
+                  protocol: TCP
+                - containerPort: 8778
+                  protocol: TCP
+              env:
+                - name: TOKENS
+                  value: ${tokens}
+                - name: UPDATE_CARD_BASE
+                  value: ${updateCardBaseURL}
+              imagePullPolicy: IfNotPresent
+              terminationMessagePolicy: File
+          restartPolicy: Always
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          securityContext: {}
+          schedulerName: default-scheduler
