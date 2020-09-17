@@ -106,42 +106,9 @@ objects:
                   value: ${updateCardBaseURL}
               imagePullPolicy: IfNotPresent
               terminationMessagePolicy: File
-              image: >-
-                image-registry.openshift-image-registry.svc:5000/${namespacePrefix}-tools/jag-isb-splunk-chatops@sha256:c1f3ece7b80d976f6a15d0bcfcd4f9c48a5080dbc6beb3bc4dccc327e8c243ae
           restartPolicy: Always
           terminationGracePeriodSeconds: 30
           dnsPolicy: ClusterFirst
           securityContext: {}
           schedulerName: default-scheduler
-    status:
-      observedGeneration: 7
-      details:
-        message: image change
-        causes:
-          - type: ImageChange
-            imageTrigger:
-              from:
-                kind: DockerImage
-                name: >-
-                  image-registry.openshift-image-registry.svc:5000/${namespacePrefix}-tools/jag-isb-splunk-chatops@sha256:c1f3ece7b80d976f6a15d0bcfcd4f9c48a5080dbc6beb3bc4dccc327e8c243ae
-      availableReplicas: 1
-      unavailableReplicas: 0
-      latestVersion: 6
-      updatedReplicas: 0
-      conditions:
-        - type: Progressing
-          status: 'False'
-          lastUpdateTime: '2020-09-11T22:31:22Z'
-          lastTransitionTime: '2020-09-11T22:31:22Z'
-          reason: ProgressDeadlineExceeded
-          message: >-
-            replication controller "${appName}-dc-6" has failed
-            progressing
-        - type: Available
-          status: 'True'
-          lastUpdateTime: '2020-09-14T09:09:37Z'
-          lastTransitionTime: '2020-09-14T09:09:37Z'
-          message: Deployment config has minimum availability.
-      replicas: 1
-      readyReplicas: 1
     
