@@ -15,12 +15,20 @@ parameters:
     displayName: Name
     name: appName
     required: true
-    value: jag-isb-chatops
+    value: jag-isb-splunk-chatops
   - description: Openshift namespace prefix
     displayName: Namespace Prefix
     name: namespacePrefix
     required: true
     value: s9h76g
+  - description: Tokens     
+    displayName: Tokens 
+    name: tokens 
+    required: true 
+  - description: Update Card Base URL 
+    displayName: Update Card Base URL
+    name: updateCardBaseURL
+    required: true
 objects:
   - kind: DeploymentConfig
     apiVersion: apps.openshift.io/v1
@@ -108,11 +116,9 @@ objects:
                   protocol: TCP
               env:
                 - name: TOKENS
-                    value: >-
-                    3ac241ab-4448-4f1a-b925-29ac7fe6e37e,8e7feccd-931c-42be-95e9-c427ddc72f95,26199729-fb88-491c-ba90-462436923ec2
+                  value: ${tokens}
                 - name: UPDATE_CARD_BASE
-                    value: >-
-                    https://jag-isb-splunk-chatops-s9h76g-dev.apps.pathfinder.aro.devops.gov.bc.ca/notification/update
+                  value: ${updateCardBaseURL}
               imagePullPolicy: IfNotPresent
               terminationMessagePolicy: File
               image: >-
