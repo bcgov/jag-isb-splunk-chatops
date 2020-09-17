@@ -29,6 +29,11 @@ parameters:
     displayName: Update Card Base URL
     name: updateCardBaseURL
     required: true
+  - description: Deployment Environment (dev/test/prod)
+    displayName: Deployment Environment 
+    name: deploymentEnvironment
+    required:
+    value: dev
 objects:
   - kind: DeploymentConfig
     apiVersion: apps.openshift.io/v1
@@ -66,7 +71,7 @@ objects:
             from:
               kind: ImageStreamTag
               namespace: ${namespacePrefix}-tools
-              name: '${appName}:dev'
+              name: '${appName}:${deploymentEnvironment}'
             lastTriggeredImage: >-
               image-registry.openshift-image-registry.svc:5000/${namespacePrefix}-tools/jag-isb-splunk-chatops@sha256:c1f3ece7b80d976f6a15d0bcfcd4f9c48a5080dbc6beb3bc4dccc327e8c243ae
         - type: ConfigChange
@@ -87,26 +92,8 @@ objects:
         spec:
           containers:
             - resources: {}
-              readinessProbe:
-                httpGet:
-                  path: /actuator/health
-                  port: 8080
-                  scheme: HTTPS
-                timeoutSeconds: 10
-                periodSeconds: 70
-                successThreshold: 1
-                failureThreshold: 3
               terminationMessagePath: /dev/termination-log
               name: ${appName}-dc
-              livenessProbe:
-                httpGet:
-                  path: /actuator/health
-                  port: 8080
-                  scheme: HTTPS
-                timeoutSeconds: 10
-                periodSeconds: 50
-                successThreshold: 1
-                failureThreshold: 3
               ports:
                 - containerPort: 8080
                   protocol: TCP
