@@ -1,87 +1,74 @@
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 labels:
-  template: jag-isb-chatops-template
+    template: jag-isb-chatops-template
 metadata:
-  annotations:
-    openshift.io/display-name: Efiling Pipeline Template
-    description: |-
-      This is a template for OpenShift Jenkins Pipelines.
-    iconClass: icon-jenkins
-    tags: instant-app,jenkins
-  name: pipeline-build-template
-parameters:
-  - description: The name assigned to all of the frontend objects defined in this template.
-    displayName: Name
-    name: appName
-    required: true
-    value: jag-isb-chatops
-  - description: Openshift namespace prefix
-    displayName: Namespace Prefix
-    name: namespacePrefix
-    required: true
-    value: s9h76g
-  - description: URL to Github Repository
-    displayName: Github URL
-    name: githubURL
-    required: true
-    value: https://github.com/bcgov/jag-isb-splunk-chatops
-objects:
-  - apiVersion: v1
-    kind: BuildConfig
-    apiVersion: build.openshift.io/v1
-    metadata:
-    name: ${appName}
-    namespace: ${namespacePrefix}-tools
-    labels:
-        app: ${appName}
-        app.kubernetes.io/component: ${appName}
-        app.kubernetes.io/instance: ${appName}
-        app.kubernetes.io/name: java
-        app.kubernetes.io/part-of: ${appName}
-        app.openshift.io/runtime: java
-        app.openshift.io/runtime-version: '8'
     annotations:
-        app.openshift.io/vcs-ref: main
-        app.openshift.io/vcs-uri: ${githubURL}
-        openshift.io/generated-by: OpenShiftWebConsole
-    spec:
-    nodeSelector: null
-    output:
-        to:
-        kind: ImageStreamTag
-        name: '${appName}:latest'
-    resources: {}
-    successfulBuildsHistoryLimit: 5
-    failedBuildsHistoryLimit: 5
-    strategy:
-        type: Source
-        sourceStrategy:
-        from:
-            kind: ImageStreamTag
-            namespace: openshift
-            name: 'java:8'
-    postCommit: {}
-    source:
-        type: Git
-        git:
-        uri: ${githubURL}
-        contextDir: /
-    triggers:
-        - type: Generic
-        generic:
-            secretReference:
-            name: ${appName}-generic-webhook-secret
-        - type: GitHub
-        github:
-            secretReference:
-            name: ${appName}-github-webhook-secret
-        - type: ImageChange
-        imageChange:
-            lastTriggeredImageID: >-
-            image-registry.openshift-image-registry.svc:5000/openshift/java@sha256:648f77558d4656107be73379219d6d2ab27a092e92a956d96737b6b0fae5000a
-        - type: ConfigChange
-    runPolicy: Serial
-    status:
-    lastVersion: 0
-    
+        openshift.io/display-name: JAG ISB Chatops Build Config
+        description: |-
+            This is a template for an OpenShift Build Config 
+        iconClass: icon-jenkins
+        tags: instant-app,jenkins
+    name: pipeline-build-template
+parameters:
+    - description: The name assigned to all of the frontend objects defined in this template.
+      displayName: Name
+      name: appName
+      required: true
+      value: jag-isb-chatops
+    - description: Openshift namespace prefix
+      displayName: Namespace Prefix
+      name: namespacePrefix
+      required: true
+      value: s9h76g
+    - description: URL to Github Repository
+      displayName: Github URL
+      name: githubURL
+      required: true
+      value: https://github.com/bcgov/jag-isb-splunk-chatops
+objects:
+    - apiVersion: template.openshift.io/v1
+        kind: BuildConfig
+        metadata:
+            name: jag-isb-splunk-chatops
+            namespace: s9h76g-tools
+        spec:
+            nodeSelector: null
+            output:
+            to:
+                kind: ImageStreamTag
+                name: 'jag-isb-splunk-chatops:latest'
+            resources: {}
+            successfulBuildsHistoryLimit: 5
+            failedBuildsHistoryLimit: 5
+            strategy:
+            type: Source
+            sourceStrategy:
+                from:
+                kind: ImageStreamTag
+                namespace: openshift
+                name: 'java:8'
+            postCommit: {}
+            source:
+            type: Git
+            git:
+                uri: 'https://github.com/bcgov/jag-isb-splunk-chatops'
+                ref: main
+            contextDir: /
+            triggers:
+            - type: Generic
+                generic:
+                secretReference:
+                    name: jag-isb-splunk-chatops-generic-webhook-secret
+            - type: GitHub
+                github:
+                secretReference:
+                    name: jag-isb-splunk-chatops-github-webhook-secret
+            - type: ImageChange
+                imageChange:
+                lastTriggeredImageID: >-
+                    image-registry.openshift-image-registry.svc:5000/openshift/java@sha256:648f77558d4656107be73379219d6d2ab27a092e92a956d96737b6b0fae5000a
+            - type: ConfigChange
+            runPolicy: Serial
+        status:
+            lastVersion: 1   

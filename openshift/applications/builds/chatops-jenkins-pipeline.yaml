@@ -1,0 +1,171 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: jag-isb-chatops-pipeline-template
+metadata:
+  annotations:
+    openshift.io/display-name: JAG ISB Chatops Pipeline Template
+    description: |-
+      This is a template for a Openshift v4.4 Jenkins Pipeline
+    iconClass: icon-jenkins
+    tags: depoloymentConfig
+  name: jag-isb-chatops-pipeline-template
+parameters:
+  - description: The name assigned to all of the frontend objects defined in this template.
+    displayName: Name
+    name: appName
+    required: true
+    value: jag-isb-splunk-chatops
+  - description: Openshift namespace prefix
+    displayName: Namespace Prefix
+    name: namespacePrefix
+    required: true
+    value: s9h76g
+  - description: Name of Build Config for pipeline to run
+    displayName: Build Config Name
+    name: buildConfig
+    required: true 
+    value: jag-isb-splunk-chatops
+  - description: Github URL 
+    displayName: Github Repository URL 
+    name: gitURL 
+    required: true 
+    value: https://github.com/bcgov/jag-isb-splunk-chatops
+objects:
+  - kind: BuildConfig
+    apiVersion: build.openshift.io/v1
+    metadata:
+    name: ${appName}
+    labels:
+        application: ${appName}
+        template: notification-pipeline-template
+    spec:
+    nodeSelector: {}
+    output: {}
+    resources: {}
+    successfulBuildsHistoryLimit: 5
+    failedBuildsHistoryLimit: 5
+    strategy:
+        type: JenkinsPipeline
+        jenkinsPipelineStrategy:
+        jenkinsfile: |
+            try {
+                node("${JENKINS_POD}") {
+
+                    // Build Image
+                    stage("Build ${buildConfig}") {
+                        openshift.withCluster() {
+                            openshift.withProject() {
+                                sh 'oc start-build ${APP_NAME}-bc -n ${TOOLS_NAMESPACE} --wait' 
+                            }
+                        }
+                    }
+
+                    // Tag Image for Dev
+                    stage('Promote to DEV') {
+                        openshift.withCluster() {
+                            openshift.withProject(){
+                                sh "echo Tagging image for DEV"
+                                sh 'oc tag ${APP_NAME}:latest ${APP_NAME}:dev'
+                            }
+                        }
+                    }
+
+                    stage("Deploy to DEV") {
+                        openshift.withCluster() {
+                            openshift.withProject() {
+                                sh 'echo Wait for notification app to rollout completely.'
+                                sh 'oc rollout status -n ${DEV_NAMESPACE} dc/${APP_NAME}-dc --watch'
+                            }
+                        }
+                    }
+                    
+                    // Tag Image for Test
+                    stage('Promote to TEST') {
+                        script {
+                            input message: 'Promote application to Test?'
+                        }
+                        openshift.withCluster() {
+                            openshift.withProject() {
+                                sh "echo Tagging image for TEST"
+                                sh 'oc tag ${APP_NAME}:latest ${APP_NAME}:test'
+                            }
+                        }
+                    }
+                    
+                    stage("Deploy to TEST") {
+                        openshift.withCluster() {
+                            openshift.withProject() {
+                                sh 'echo Wait for Demo app to rollout completely.'
+                                sh 'oc rollout status -n ${TEST_NAMESPACE} dc/${APP_NAME}-dc --watch'
+                            }
+                        }
+                    }
+                    
+                    // Tag Image for Prod
+                    stage('Promote to PROD') {
+                        script {
+                            input message: 'Promote application to Prod?'
+                        }
+                        openshift.withCluster() {
+                            openshift.withProject() {
+                                sh "echo Tagging image for PROD"
+                                sh 'oc tag ${APP_NAME}:latest ${APP_NAME}:prod'
+                            }
+                        }
+                    }
+                    
+                    stage("Deploy to PROD") {
+                        openshift.withCluster() {
+                            openshift.withProject() {
+                                sh 'echo Wait for Demo app to rollout completely.'
+                                sh 'oc rollout status -n ${PROD_NAMESPACE} dc/${APP_NAME}-dc --watch'
+                            }
+                        }
+                    }
+
+                }
+
+            } catch (err) {
+                echo "in catch block"
+                currentBuild.result = 'FAILURE'
+                env.ERR = "${err}"
+                node {
+                    sh "curl -XPOST '${LIFECYCLE_WEBHOOK}' -H 'Content-type: application/json' --data '{\"username\":\"The Pipe Lion\",\"icon_emoji\":\":lion_face:\",\"text\": \"${APP_NAME} Pipeline Failure - ${ERR}\"}'"
+                }
+                echo "Caught: ${err}"
+                throw err
+            }
+        env:
+            - name: APP_NAME
+            value: ${buildConfig}
+            - name: LIFECYCLE_WEBHOOK
+            - name: GIT_SOURCE_URL
+            value: ${gitURL}
+            - name: GIT_SOURCE_REF
+            value: main
+            - name: JENKINS_POD
+            value: maven
+            - name: TOOLS_NAMESPACE
+            value: ${namespacePrefix}-tools
+            - name: DEV_NAMESPACE
+            value: ${namespacePrefix}-dev
+            - name: TEST_NAMESPACE
+            value: ${namespacePrefix}-test
+            - name: PROD_NAMESPACE
+            value: ${namespacePrefix}-prod
+    postCommit: {}
+    source:
+        type: Git
+        git:
+        uri: ${gitURL}
+        ref: main
+    triggers:
+        - type: ConfigChange
+        - type: GitHub
+        github:
+            secretReference:
+            name: github-secret
+    runPolicy: Serial
+    status:
+    lastVersion: 0
