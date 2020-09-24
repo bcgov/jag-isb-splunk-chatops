@@ -8,7 +8,7 @@ services:
   ntt-data-notification-splunk:
     image: splunk/splunk:latest
     environment:
-      - SPLUNK_PASSWORD=TestTest
+      - SPLUNK_PASSWORD=${SPLUNK_PASSWORD}
       - SPLUNK_START_ARGS=--accept-license
     ports:
       - "7000:8000"
@@ -16,6 +16,18 @@ services:
     networks:
       notification-net:
         ipv4_address: 172.20.0.5
+
+  #############################################################################################
+  ###                                 SPLUNK INIT                                           ###
+  #############################################################################################
+  splunk-init:
+    build:
+      context: ./splunk
+    environment:
+      - SPLUNK_PASSWORD=${SPLUNK_PASSWORD}
+      - SPLUNK_TOKEN=${SPLUNK_TOKEN}
+    networks:
+      - notification-net
 
   #############################################################################################
   ###                            NTT Data notification service                              ###
