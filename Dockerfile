@@ -8,11 +8,11 @@ ARG PROXY_SET=false
 ARG PROXY_HOST=
 ARG PROXY_PORT=
 
-# ARG MVN_PROFILES
+ARG MVN_PROFILES
 ARG SERVICE_NAME
 
 ENV SERVICE_NAME=${SERVICE_NAME}
-# ENV MVN_PROFILES=${MVN_PROFILES}
+ENV MVN_PROFILES=${MVN_PROFILES}
 
 WORKDIR ${SERVICE_NAME}
 
@@ -24,15 +24,15 @@ COPY src src
 RUN mvn -B clean package \
         -DproxySet=${PROXY_SET} \
         -DproxyHost=${PROXY_HOST} \
-        -DproxyPort=${PROXY_PORT}
+        -DproxyPort=${PROXY_PORT} \
+        -P ${MVN_PROFILES}
 
-
-FROM node:13.12.0-alpine
-
-# install dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
+#FROM node:13.12.0-alpine
+#
+## install dependencies
+#COPY package.json ./
+#COPY package-lock.json ./
+#RUN npm install
 
 # RUN mvn -B clean package \
 #         -DproxySet=${PROXY_SET} \
@@ -47,6 +47,7 @@ RUN npm install
 FROM openjdk:8-jdk-slim
 
 # ARG MVN_PROFILES
+
 ARG SERVICE_NAME
 
 COPY --from=build ${SERVICE_NAME}/target/${SERVICE_NAME}-*.jar /app/service.jar
