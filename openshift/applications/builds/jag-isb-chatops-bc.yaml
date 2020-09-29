@@ -9,7 +9,7 @@ metadata:
       This is a template for OpenShift Jenkins Pipelines.
     iconClass: icon-jenkins
     tags: instant-app,jenkins
-  name: pipeline-build-template
+  name: build-template
 parameters:
   - description: The name assigned to all of the frontend objects defined in this template.
     displayName: Name
