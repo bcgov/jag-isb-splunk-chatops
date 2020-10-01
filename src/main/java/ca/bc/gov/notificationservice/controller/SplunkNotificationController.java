@@ -34,6 +34,9 @@ public class SplunkNotificationController {
     public ResponseEntity<String> alert(@PathVariable("token") String token,
                                         @PathVariable("routes") String routes,
                                         @RequestBody SplunkAlert splunkAlert) {
+
+        logger.info("Received notification request from Splunk");
+
         if (!notificationServiceProperties.getTokens().contains(token)) {
             logger.error("Token failed to validate");
             return new ResponseEntity<>("Token validation failed", HttpStatus.UNAUTHORIZED);
