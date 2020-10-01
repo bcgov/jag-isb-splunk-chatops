@@ -33,11 +33,12 @@ public class UpdateCardController {
         return new ResponseEntity<>("Token validation failed", HttpStatus.UNAUTHORIZED);
       }
 
-      logger.info("Received message from teams");
+      logger.info("Received update request from teams");
 
       Optional<WebHookUrls> webHookUrl = teamsUpdate.getWebHookParams().getWebHookUrls().stream().findFirst();
 
       if (!webHookUrl.isPresent()) {
+        logger.warn("Missing webHook Url");
         return ResponseEntity.badRequest().body("Missing webHook Url.");
       }
 

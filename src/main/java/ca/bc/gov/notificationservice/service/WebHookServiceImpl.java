@@ -45,8 +45,7 @@ public class WebHookServiceImpl implements WebHookService {
     private void post(String url, Object postObj) {
         try {
             Gson postJson = new Gson();
-
-            logger.info("{}", postJson.toJson(postObj, Object.class));
+            
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request = new HttpEntity<>(postJson.toJson(postObj, Object.class), headers);

@@ -4,10 +4,13 @@ import ca.bc.gov.notificationservice.rocket.models.RocketMessage;
 import ca.bc.gov.notificationservice.service.ChannelService;
 import ca.bc.gov.notificationservice.sources.notification.models.Notification;
 import ca.bc.gov.notificationservice.service.ChatApp;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RocketChannelService implements ChannelService {
+    Logger logger = LoggerFactory.getLogger(RocketChannelService.class);
 
     private static final String ROCKETCHATTEMPLATE = "%s: %s \n";
 
@@ -20,6 +23,8 @@ public class RocketChannelService implements ChannelService {
     public Object generatePayload(Notification notification, String webHookUrl, String updateUrl) {
         RocketMessage rocketMessage = RocketMessage.defaultNttMessage(notification.getAppName());
         rocketMessage.setText(getRocketText(notification));
+
+        logger.info("Created ROCKET message");
 
         return rocketMessage;
     }
