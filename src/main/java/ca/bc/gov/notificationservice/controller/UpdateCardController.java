@@ -28,16 +28,17 @@ public class UpdateCardController {
 
   @PostMapping(value = "update/{token}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> update(@PathVariable("token") String token, @RequestBody NotificationBody teamsUpdate) {
+      logger.info("Received update request for {} from teams", teamsUpdate.getNotification().getOrigin());
+
       if (!notificationServiceProperties.getTokens().contains(token)) {
         logger.error("Token failed to validate");
         return new ResponseEntity<>("Token validation failed", HttpStatus.UNAUTHORIZED);
       }
 
-      logger.info("Received message from teams");
-
       Optional<WebHookUrls> webHookUrl = teamsUpdate.getWebHookParams().getWebHookUrls().stream().findFirst();
 
       if (!webHookUrl.isPresent()) {
+        logger.warn("Missing webHook Url");
         return ResponseEntity.badRequest().body("Missing webHook Url.");
       }
 

@@ -28,6 +28,8 @@ public class NotificationController {
   @PostMapping(value = "generic/{token}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> alert(@PathVariable("token") String token,
                                       @RequestBody NotificationBody notificationBody) {
+    logger.info("Received generic notification request from {}", notificationBody.getNotification().getOrigin());
+
     if (!notificationServiceProperties.getTokens().contains(token)) {
       logger.error("Token failed to validate");
       return new ResponseEntity<>("Token validation failed", HttpStatus.UNAUTHORIZED);

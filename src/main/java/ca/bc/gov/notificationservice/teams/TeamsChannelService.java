@@ -59,6 +59,8 @@ public class TeamsChannelService implements ChannelService {
 
         statusAction.setBody(notificationBody.toJson());
 
+        logger.info("Created TEAMS card.");
+
         return  teamsCard;
     }
 
