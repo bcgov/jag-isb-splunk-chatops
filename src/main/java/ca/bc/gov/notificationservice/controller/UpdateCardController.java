@@ -28,7 +28,7 @@ public class UpdateCardController {
 
   @PostMapping(value = "update/{token}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> update(@PathVariable("token") String token, @RequestBody NotificationBody teamsUpdate) {
-      logger.info("Received update request from teams");
+      logger.info("Received update request for {} from teams", teamsUpdate.getNotification().getOrigin());
 
       if (!notificationServiceProperties.getTokens().contains(token)) {
         logger.error("Token failed to validate");
