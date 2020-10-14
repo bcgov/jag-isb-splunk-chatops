@@ -78,10 +78,23 @@
 			<version>4.9.0</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Logging -->
 		<dependency>
-			<groupId>com.splunk.logging</groupId>
-			<artifactId>splunk-library-javalogging</artifactId>
-			<version>1.8.0</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-access</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.rakugakibox.spring.boot</groupId>
+			<artifactId>logback-access-spring-boot-starter</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -94,7 +107,7 @@
 				<repository>
 					<id>splunk-artifactory</id>
 					<name>Splunk Releases</name>
-					<url>https://splunk.jfrog.io/artifactory/ext-releases-local/</url>
+					<url>https://splunk.jfrog.io/splunk/ext-releases-local/</url>
 				</repository>
 			</repositories>
 
