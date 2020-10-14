@@ -14,8 +14,8 @@
         <appender name="http" class="com.splunk.logging.HttpEventCollectorLogbackAppender">
             <url>${SPLUNK_URL}</url>
             <token>${SPLUNK_TOKEN}</token>
-            <source>notificationservice</source>
-            <sourcetype>notificationservice-access-logs</sourcetype>
+            <source>notification-service</source>
+            <sourcetype>notification-access-logs</sourcetype>
             <middleware>HttpEventCollectorUnitTestMiddleware</middleware>
             <disableCertificateValidation>true</disableCertificateValidation>
             <layout class="ch.qos.logback.access.PatternLayout">
