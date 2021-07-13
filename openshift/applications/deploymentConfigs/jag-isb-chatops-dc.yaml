@@ -35,6 +35,32 @@ parameters:
     required:
     value: dev
 objects:
+  - kind: Service
+    apiVersion: apps.openshift.io/v1
+    metadata:
+      name: ${appName}
+      namespace: ${namespacePrefix}-${deploymentEnvironment}
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+    spec:
+      ports:
+        - name: 8080-tcp
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
+        - name: 8443-tcp
+          protocol: TCP
+          port: 8443
+          targetPort: 8443
+        - name: 8778-tcp
+          protocol: TCP
+          port: 8778
+          targetPort: 8778
+      selector:
+        app: ${appName}-dc
+        deploymentconfig: ${appName}-dc
+      type: ClusterIP
+      sessionAffinity: None
   - kind: DeploymentConfig
     apiVersion: apps.openshift.io/v1
     metadata:
