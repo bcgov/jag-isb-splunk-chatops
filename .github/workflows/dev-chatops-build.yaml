@@ -1,0 +1,46 @@
+  
+name: Build JAG Chatops Image and Push to Openshift 4 Registry
+
+on:
+  push:
+    branches: [main]
+
+  workflow_dispatch:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cluster Login
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT4_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.OPENSHIFT4_SA_PASSWORD }}"}'
+          cmd: |
+            'version'
+
+      - name: Login to Openshift Docker
+        run : |
+          docker login ${{ secrets.OPENSHIFT4_EXTERNAL_REPOSITORY }} -u ${{ secrets.OPENSHIFT4_SA_USERNAME }} -p ${{ secrets.OPENSHIFT4_SA_PASSWORD }}
+      
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build the Docker image
+        run: |          
+          
+          docker-compose build notification-service
+          
+          docker image ls
+          
+          docker tag jag-isb-splunk-chatops_notification-service ${{ secrets.OPENSHIFT4_EXTERNAL_REPOSITORY }}/${{ secrets.OPENSHIFT4_TOOLS_NAMESPACE }}/notification-service:latest
+          docker push ${{ secrets.OPENSHIFT4_EXTERNAL_REPOSITORY }}/${{ secrets.OPENSHIFT4_TOOLS_NAMESPACE }}/notification-service:latest
