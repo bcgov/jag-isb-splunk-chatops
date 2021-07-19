@@ -32,9 +32,67 @@ parameters:
   - description: Deployment Environment (dev/test/prod)
     displayName: Deployment Environment 
     name: deploymentEnvironment
-    required:
+    required: true
     value: dev
+  - description: Platform URL Domain
+    displayName: Platform URL Domain
+    name: platformDomain
+    required: true
+    value: apps.silver.devops.gov.bc.ca
 objects:
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: ${appName}
+      namespace: ${namespacePrefix}-${deploymentEnvironment}
+      labels:
+        app: ${appName}
+        app.kubernetes.io/component: ${appName}
+        app.kubernetes.io/instance: ${appName}
+        app.kubernetes.io/name: ''
+        app.kubernetes.io/part-of: ${appName}
+        app.openshift.io/runtime: ''
+      annotations:
+        openshift.io/host.generated: 'true'
+    spec:
+      host: ${appName}-${namespacePrefix}-${deploymentEnvironment}.${platformDomain}
+      path: /notification
+      to:
+        kind: Service
+        name: ${appName}
+        weight: 100
+      port:
+        targetPort: 8080-tcp
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+      wildcardPolicy: None
+      - kind: Service
+    apiVersion: apps.openshift.io/v1
+    metadata:
+      name: ${appName}
+      namespace: ${namespacePrefix}-${deploymentEnvironment}
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+    spec:
+      ports:
+        - name: 8080-tcp
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
+        - name: 8443-tcp
+          protocol: TCP
+          port: 8443
+          targetPort: 8443
+        - name: 8778-tcp
+          protocol: TCP
+          port: 8778
+          targetPort: 8778
+      selector:
+        app: ${appName}-dc
+        deploymentconfig: ${appName}-dc
+      type: ClusterIP
+      sessionAffinity: None
   - kind: DeploymentConfig
     apiVersion: apps.openshift.io/v1
     metadata:
