@@ -1,0 +1,54 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: jag-isb-chatops-imagestream-template
+metadata:
+  annotations:
+    openshift.io/display-name: JAG ISB Chatops Imagestream Template
+    description: |-
+      This is a template for a Openshift 4 ImageStream
+    iconClass: icon-jenkins
+    tags: imagestream
+  name: jag-isb-chatops-imagestream-template
+parameters:
+  - description: The name assigned to all of the frontend objects defined in this template.
+    displayName: Name
+    name: appName
+    required: true
+    value: jag-isb-splunk-chatops
+  - description: Openshift namespace prefix
+    displayName: Namespace Prefix
+    name: namespacePrefix
+    required: true
+    value: s9h76g
+  - description: Deployment Environment (dev/test/prod)
+    displayName: Deployment Environment 
+    name: deploymentEnvironment
+    required: true
+    value: tools
+  - description: Repository URL
+    displayName: Repository URL
+    name: repositoryURL
+    required: true
+    value: apps.silver.devops.gov.bc.ca
+objects:
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: ${appName}
+      namespace: ${namespacePrefix}-${deploymentEnvironment}
+      labels:
+        app: ${appName}
+        app.kubernetes.io/component: ${appName}
+        app.kubernetes.io/instance: ${appName}
+        app.kubernetes.io/name: java
+        app.kubernetes.io/part-of: ${appName}
+        app.openshift.io/runtime: java
+        app.openshift.io/runtime-version: '8'
+      annotations:
+        app.openshift.io/vcs-ref: main
+        app.openshift.io/vcs-uri: ${repositoryURL}
+        openshift.io/generated-by: OpenShiftWebConsole
+    spec:
+      lookupPolicy:
+        local: false
